@@ -1,4 +1,5 @@
 import json
+from collections.abc import Generator
 from openai import OpenAI
 from docgen.config import OPENAI_BASE_URL, OPENAI_API_KEY, OPENAI_MODEL
 
@@ -7,17 +8,35 @@ def _get_client() -> OpenAI:
     return OpenAI(base_url=OPENAI_BASE_URL, api_key=OPENAI_API_KEY)
 
 
+def _build_messages(system: str, user: str) -> list[dict]:
+    return [
+        {"role": "system", "content": system},
+        {"role": "user", "content": user},
+    ]
+
+
 def chat(system: str, user: str, temperature: float = 0.3) -> str:
     client = _get_client()
     response = client.chat.completions.create(
         model=OPENAI_MODEL,
-        messages=[
-            {"role": "system", "content": system},
-            {"role": "user", "content": user},
-        ],
+        messages=_build_messages(system, user),
         temperature=temperature,
     )
     return response.choices[0].message.content
+
+
+def stream_chat(system: str, user: str, temperature: float = 0.3) -> Generator[str, None, None]:
+    client = _get_client()
+    stream = client.chat.completions.create(
+        model=OPENAI_MODEL,
+        messages=_build_messages(system, user),
+        temperature=temperature,
+        stream=True,
+    )
+    for chunk in stream:
+        delta = chunk.choices[0].delta.content
+        if delta:
+            yield delta
 
 
 def extract_materials(chapters: list[dict], source_text: str, requirement: str) -> dict:
@@ -54,6 +73,16 @@ def generate_chapter(
     all_chapters: list[dict],
     prev_summaries: list[str],
 ) -> str:
+    system, user = _build_chapter_prompt(
+        chapter, materials, requirement, all_chapters, prev_summaries
+    )
+    return chat(system, user)
+
+
+def _build_chapter_prompt(
+    chapter: dict, materials: str, requirement: str,
+    all_chapters: list[dict], prev_summaries: list[str],
+) -> tuple[str, str]:
     chapter_list = "\n".join(
         f"- 章节 {c['index']}: {c['title']} — {c['description']}"
         for c in all_chapters
@@ -78,11 +107,20 @@ def generate_chapter(
         f"## 相关素材\n{materials}"
         f"{summary_text}"
     )
+    return system, user
 
-    return chat(system, user)
 
-
-def summarize_chapter(chapter_title: str, chapter_content: str) -> str:
+def generate_chapter_stream(
+    chapter: dict,
+    materials: str,
+    requirement: str,
+    all_chapters: list[dict],
+    prev_summaries: list[str],
+) -> Generator[str, None, None]:
+    system, user = _build_chapter_prompt(
+        chapter, materials, requirement, all_chapters, prev_summaries
+    )
+    yield from stream_chat(system, user)(chapter_title: str, chapter_content: str) -> str:
     system = (
         "为以下章节生成一段 200-500 字的摘要。"
         "摘要必须包含该章的核心要点和关键术语，供后续章节参考以保持连贯性。"

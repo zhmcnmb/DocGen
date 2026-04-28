@@ -1,14 +1,8 @@
-import sys
-from docgen.cli import run_new_session, run_resume_session
+from docgen.api import create_app
 
-
-def main():
-    if len(sys.argv) > 1:
-        session_dir = sys.argv[1]
-        run_resume_session(session_dir)
-    else:
-        run_new_session()
-
+app = create_app()
 
 if __name__ == "__main__":
-    main()
+    print("DocGen Agent 启动中...")
+    print("请在浏览器中打开: http://localhost:5000")
+    app.run(debug=True, port=5000)

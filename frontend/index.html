@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocGen Agent — 文档生成助手</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>DocGen Agent</h1>
+        <span id="status-badge">准备中</span>
+    </header>
+
+    <main id="app">
+        <!-- Step 1: 上传 & 配置 -->
+        <section id="step-upload" class="step active">
+            <h2>1. 上传文件 & 填写需求</h2>
+
+            <div class="upload-area">
+                <h3>模板文件 (Markdown)</h3>
+                <div class="drop-zone" id="template-drop" data-type="template">
+                    <p>拖拽模板文件到此处，或点击选择</p>
+                    <input type="file" id="template-input" accept=".md,.txt" hidden>
+                </div>
+                <div id="template-info" class="file-info"></div>
+            </div>
+
+            <div class="upload-area">
+                <h3>源文件 (Word / PDF / Excel / Markdown)</h3>
+                <div class="drop-zone" id="source-drop" data-type="source">
+                    <p>拖拽源文件到此处，或点击选择（支持多文件）</p>
+                    <input type="file" id="source-input" accept=".docx,.pdf,.xlsx,.md,.txt" multiple hidden>
+                </div>
+                <div id="source-list" class="file-list"></div>
+            </div>
+
+            <div class="form-group">
+                <h3>需求描述</h3>
+                <textarea id="requirement" rows="4" placeholder="描述你想生成的文档类型、目标读者、重点内容等..."></textarea>
+            </div>
+
+            <button id="btn-start" class="btn-primary" disabled>开始生成</button>
+        </section>
+
+        <!-- Step 2: 确认理解 -->
+        <section id="step-confirm" class="step">
+            <h2>2. 确认理解</h2>
+            <div id="confirm-content"></div>
+            <div class="actions">
+                <button id="btn-confirm" class="btn-primary">确认，继续</button>
+            </div>
+        </section>
+
+        <!-- Step 3: 素材确认 -->
+        <section id="step-materials" class="step">
+            <h2>3. 素材提取</h2>
+            <div id="materials-loading" class="loading">正在提取素材...</div>
+            <div id="materials-content"></div>
+            <div class="actions">
+                <button id="btn-materials-confirm" class="btn-primary" disabled>确认素材，开始生成</button>
+            </div>
+        </section>
+
+        <!-- Step 4: 生成 -->
+        <section id="step-generate" class="step">
+            <h2>4. 文档生成</h2>
+            <div class="progress-bar">
+                <div id="progress-fill" class="progress-fill"></div>
+                <span id="progress-text">0/0 章节</span>
+            </div>
+            <div id="chapters-panel"></div>
+        </section>
+
+        <!-- Step 5: 审阅 & 输出 -->
+        <section id="step-review" class="step">
+            <h2>5. 审阅 & 下载</h2>
+            <div id="review-tabs"></div>
+            <div id="review-content"></div>
+            <div class="form-group">
+                <h3>全局修改</h3>
+                <textarea id="global-feedback" rows="2" placeholder="输入全局修改意见..."></textarea>
+                <button id="btn-revise-global" class="btn-secondary">应用修改</button>
+            </div>
+            <div class="actions">
+                <button id="btn-download" class="btn-primary">下载文档 (.md)</button>
+            </div>
+        </section>
+    </main>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>

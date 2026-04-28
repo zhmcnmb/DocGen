@@ -1,0 +1,311 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: -apple-system, "Microsoft YaHei", sans-serif;
+    background: #f5f7fa;
+    color: #333;
+    line-height: 1.6;
+}
+
+header {
+    background: #1a1a2e;
+    color: #fff;
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+header h1 { font-size: 20px; font-weight: 600; }
+
+#status-badge {
+    background: #e94560;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+
+main {
+    max-width: 900px;
+    margin: 32px auto;
+    padding: 0 24px;
+}
+
+.step { display: none; }
+.step.active { display: block; }
+
+h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e94560;
+}
+
+h3 { font-size: 16px; margin-bottom: 12px; color: #555; }
+
+/* Drop zone */
+.drop-zone {
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 32px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #fff;
+}
+
+.drop-zone:hover, .drop-zone.drag-over {
+    border-color: #e94560;
+    background: #fff5f5;
+}
+
+.drop-zone p { color: #999; }
+
+.upload-area { margin-bottom: 24px; }
+
+.file-info, .file-list { margin-top: 8px; }
+
+.file-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #fff;
+    border-radius: 6px;
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+
+.file-item .name { flex: 1; }
+.file-item .size { color: #999; font-size: 12px; }
+.file-item .status { color: #4caf50; font-size: 12px; }
+
+/* Form */
+.form-group {
+    margin-bottom: 24px;
+}
+
+textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+textarea:focus { outline: none; border-color: #e94560; }
+
+/* Buttons */
+.btn-primary, .btn-secondary {
+    padding: 10px 24px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btn-primary {
+    background: #e94560;
+    color: #fff;
+}
+
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-secondary {
+    background: #f0f0f0;
+    color: #333;
+}
+
+.btn-primary:hover:not(:disabled) { opacity: 0.85; }
+.btn-secondary:hover { background: #e0e0e0; }
+
+.actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+/* Loading */
+.loading {
+    text-align: center;
+    padding: 32px;
+    color: #999;
+}
+
+.loading::after {
+    content: '';
+    display: inline-block;
+    animation: spin 1s linear infinite;
+    border: 2px solid #ddd;
+    border-top: 2px solid #e94560;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Confirm content */
+.confirm-item {
+    background: #fff;
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+}
+
+.confirm-item .label { font-weight: 600; margin-bottom: 4px; }
+.confirm-item .value { color: #666; font-size: 14px; }
+
+/* Materials cards */
+.material-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+    border-left: 4px solid #4caf50;
+}
+
+.material-card.insufficient { border-left-color: #ff9800; }
+
+.material-card .title { font-weight: 600; }
+.material-card .detail { color: #666; font-size: 14px; margin-top: 4px; }
+
+/* Progress bar */
+.progress-bar {
+    background: #e0e0e0;
+    border-radius: 8px;
+    height: 28px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-fill {
+    background: linear-gradient(90deg, #e94560, #ff6b6b);
+    height: 100%;
+    width: 0%;
+    transition: width 0.3s;
+}
+
+#progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 13px;
+    color: #333;
+}
+
+/* Chapter cards */
+.chapter-card {
+    background: #fff;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    overflow: hidden;
+}
+
+.chapter-header {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    cursor: pointer;
+    gap: 12px;
+}
+
+.chapter-header:hover { background: #fafafa; }
+
+.chapter-status {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+.chapter-status.done { background: #4caf50; color: #fff; }
+.chapter-status.active { background: #e94560; color: #fff; animation: pulse 1s infinite; }
+.chapter-status.pending { background: #e0e0e0; color: #999; }
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+.chapter-title { flex: 1; font-weight: 500; }
+.chapter-chars { color: #999; font-size: 13px; }
+
+.chapter-body {
+    padding: 0 16px 16px;
+    display: none;
+}
+
+.chapter-body.open { display: block; }
+
+.chapter-body pre {
+    background: #f5f5f5;
+    padding: 12px;
+    border-radius: 6px;
+    white-space: pre-wrap;
+    font-size: 14px;
+    line-height: 1.8;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.chapter-body .revise-area {
+    margin-top: 12px;
+    display: flex;
+    gap: 8px;
+}
+
+.chapter-body .revise-area input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+/* Review tabs */
+.review-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #fff;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.tab-btn.active {
+    background: #e94560;
+    color: #fff;
+    border-color: #e94560;
+}
+
+#review-content {
+    background: #fff;
+    padding: 24px;
+    border-radius: 8px;
+    min-height: 200px;
+}
+
+#review-content pre {
+    white-space: pre-wrap;
+    font-size: 14px;
+    line-height: 1.8;
+}
